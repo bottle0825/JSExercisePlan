@@ -38,3 +38,14 @@ for(var i=1;i<arr2.length;i++){
 	document.getElementById('show4').innerHTML+="&"+arr2[i];
 }
 
+//冒泡排序
+for(var j=num1.length-2;j>=0;j--){
+	for(var i=0;i<j;i++){
+		if(num1[i]>num1[i+1]){
+			var temp = num1[i];
+			num1[i] = num1[i+1];
+			num1[i+1] = temp;
+		}
+	}
+}
+document.getElementById('show5').innerHTML = num1;
