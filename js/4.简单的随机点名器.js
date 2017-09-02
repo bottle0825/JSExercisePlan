@@ -13,7 +13,7 @@ function Choose(){
 		},100);
 	}else{
 		clearInterval(i);//清除定时器
-		console.log(names.length)
+		console.log(names[ran])
 		nameshow.innerHTML = nameshow.innerHTML + ' '+names[ran];
 		show.innerHTML = names.splice(ran,1);//删除选中项，并打印在屏幕上。
 	}
