@@ -33,10 +33,11 @@ document.getElementById('show3').innerHTML = '生成的数组为：'+num2;
 
 //第四题
 var arr2 = ["吕超","赵云","典韦","关羽","马超","张飞"];
-document.getElementById('show4').innerHTML = arr2[0];
-for(var i=1;i<arr2.length;i++){
-	document.getElementById('show4').innerHTML+="&"+arr2[i];
-}
+document.getElementById('show4').innerHTML = arr2.join('&');
+//document.getElementById('show4').innerHTML = arr2[0];
+//for(var i=1;i<arr2.length;i++){
+//	document.getElementById('show4').innerHTML+="&"+arr2[i];
+//}
 
 //冒泡排序
 for(var j=num1.length-2;j>=0;j--){
