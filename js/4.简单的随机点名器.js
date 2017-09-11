@@ -5,6 +5,8 @@ function Choose(){
 	flag = 0-flag;
 	var show = document.getElementById('show');
 	var nameshow = document.getElementById('name');
+	var btn = document.getElementsByTagName('button')[0];
+	btn.innerHTML = '停止';
 	if(flag==1){
 		i = setInterval(function(){
 			ran = Math.random()*names.length;
@@ -16,5 +18,6 @@ function Choose(){
 		console.log(names[ran])
 		nameshow.innerHTML = nameshow.innerHTML + ' '+names[ran];
 		show.innerHTML = names.splice(ran,1);//删除选中项，并打印在屏幕上。
+		btn.innerHTML = '开始';
 	}
 }
