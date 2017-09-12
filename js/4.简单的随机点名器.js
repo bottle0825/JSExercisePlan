@@ -21,3 +21,10 @@ function Choose(){
 		btn.innerHTML = '开始';
 	}
 }
+//---键盘事件
+document.onkeydown = function(ev){
+	var e = ev||window.event;
+	if(e.keyCode==32){
+		Choose();
+	}
+}
