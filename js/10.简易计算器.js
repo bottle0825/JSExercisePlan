@@ -22,6 +22,7 @@ for(let i=0;i<lis.length;i++){
 		}else if(i==18){
 			Run();
 			flag=0;
+			flags = 1;
 		}else{
 			Getnum(i);
 		}
@@ -56,6 +57,13 @@ function Remove0(str){
 
 //---获取num
 function Getnum(i){
+	if(flags == 1){
+		num1 = '0';
+		num2 = '0';
+		flags = 0;
+		flag =0;
+		fh = '';
+	}
 	if(i==0){
 		num1='0';//按ac时候初始化计算器
 		num2='0';
@@ -87,10 +95,6 @@ function Getnum(i){
 			num1 = Remove0(num1);
 			show.innerHTML = num1;
 		}
-	}
-	if(flags == 1){
-		num2 = '0';
-		flags = 0;
 	}
 	console.log(num1);
 }
