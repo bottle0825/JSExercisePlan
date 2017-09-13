@@ -21,10 +21,7 @@ for(let i=0;i<lis.length;i++){
 			console.log(arr[i]);
 		}else if(i==18){
 			Run();
-			num2 = num1;
-			flags = 1;
 			flag=0;
-			num1 = '0';
 		}else{
 			Getnum(i);
 		}
