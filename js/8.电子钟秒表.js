@@ -8,6 +8,7 @@ console.log(Date);
 
 //---实现秒表
 var btn = document.getElementsByTagName("button");
+var lis = document.getElementsByTagName('li');
 var mb = document.getElementsByTagName('p');
 var count = 0;
 var scount = 0;
@@ -15,6 +16,7 @@ var mcount = 0;
 var flag = false;
 var timer = null;
 var show = '';
+
 //---开始计时
 btn[1].onclick = function(){
 	if(!flag){
@@ -25,13 +27,18 @@ btn[1].onclick = function(){
 			if(mcount==100){
 				scount++;
 				mcount=0;
+				lis[3].style.backgroundImage = 'url(../img/num/'+parseInt(scount/10)+'.JPG)';
+				lis[4].style.backgroundImage = 'url(../img/num/'+parseInt(scount%10)+'.JPG)';
 			}
 			if(scount==60){
 				count++;
 				scount=0;
+				lis[0].style.backgroundImage = 'url(../img/num/'+parseInt(count/10)+'.JPG)';
+				lis[1].style.backgroundImage = 'url(../img/num/'+parseInt(count%10)+'.JPG)';
 			}
-			mb[0].innerHTML = count+":"+scount+"."+mcount;
 			flag = true;
+			lis[6].style.backgroundImage = 'url(../img/num/'+parseInt(mcount/10)+'.JPG)';
+			lis[7].style.backgroundImage = 'url(../img/num/'+parseInt(mcount%10)+'.JPG)';
 		},10)
 	}else{
 		clearInterval(timer);
@@ -44,12 +51,16 @@ btn[0].onclick = function(){
 	clearInterval(timer);
 	btn[1].innerHTML = '开始计时';
 	flag = false;
-	mb[0].innerHTML = '00:00.00';
 	mb[1].innerHTML = '';
 	count = 0;
 	scount = 0;
 	mcount = 0;
+	for(var i=0;i<8;i++){
+		if(i!=2&&i!=5){
+			lis[i].style.backgroundImage = 'url(../img/num/0.JPG)';
+		}
+	}
 }
 btn[2].onclick = function(){
-	mb[1].innerHTML +=' '+count+":"+scount+"."+mcount;
+	mb[0].innerHTML +=' &nbsp;&nbsp;&nbsp;'+count+":"+scount+"."+mcount;
 }

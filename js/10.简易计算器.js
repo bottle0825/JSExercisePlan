@@ -22,7 +22,6 @@ for(let i=0;i<lis.length;i++){
 		}else if(i==18){
 			Run();
 			flag=0;
-			flags = 1;
 		}else{
 			Getnum(i);
 		}
