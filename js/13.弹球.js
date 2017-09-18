@@ -3,22 +3,58 @@ var btn = document.getElementsByTagName('button')[0];
 var ball = document.getElementById('ball');
 var bot = document.getElementById('dot');
 var lis = document.getElementsByTagName('li');
-var target = lis[5].offsetLeft;
-var ballx = 440;
-var bally = 10;
-var speedx = 0;
-var speedy = 0;
+var Rank = document.getElementById('Rank');
+var target = lis[9].offsetLeft;
+var k = 9;//bot模块编号
+var ballx = 440;//球的横向坐标
+var bally = 10;//球的纵向坐标
+var speedx = 0;//球的横向速度
+var speedy = 0;//球的纵向速度
+var flag = 0;//碰撞次数
+var ranks = 1;//游戏等级
+var rank = 1;//速度等级
+var f = 20;//升级速度
 var timer = null;
-for(var i=0;i<8;i++){
+
+//---鼠标控制板块移动
+for(let i=0;i<15;i++){
 	lis[i].onmouseover = function(){
 		target = this.offsetLeft;
+		k = i;
 		console.log(target);
+		animate(bot,target);
+	}
+}
+
+//---键盘控制板块移动
+document.onkeydown=function(event){
+	var e = event || window.event || arguments.callee.caller.arguments[0];
+	if(e && e.keyCode==37){//左方向键点击事件
+		if(k==0){
+			k=k;
+		}else{
+			k--;
+		}
+		target = lis[k].offsetLeft;
+		animate(bot,target);
+	}
+	if(e && e.keyCode==39){//右方向键点击事件
+		if(k==14){
+			k=k;
+		}else{
+			k++;
+		}
+		target = lis[k].offsetLeft;
 		animate(bot,target);
 	}
 }
 
 //---开始游戏
 btn.onclick = function(){
+	ballx = 440;//球的横向坐标
+	bally = 10;//球的纵向坐标
+	speedx = 0;//球的横向速度
+	speedy = 0;//球的纵向速度
 	createBall();
 	Run();
 }
@@ -26,8 +62,13 @@ btn.onclick = function(){
 
 //---随机生成球的发射角度
 function createBall(){
-	var r = 0;
-	r = Math.random()*Math.PI;
+	var r = 0;//随机角度
+	var f = 0;//随机镜像角度
+	r = (0.15*Math.PI)+(Math.random()*0.15*(Math.PI));
+	f = Math.floor(Math.random()*2);
+	if(f==1){
+		r=Math.PI-r;
+	}
 	speedx = Math.cos(r);	
 	speedy = Math.sin(r);
 //	console.log((speedx*speedx)+(speedy*speedy));
@@ -41,22 +82,50 @@ function Run(){
 	timer = setInterval(function(){
 		ball.style.left = ballx+'px';
 		ball.style.bottom = bally+'px';
-		ballx += speedx;
-		bally += speedy;
+		ballx += speedx*rank;
+		bally += speedy*rank;
 		Check();
-		console.log(ballx);
-	},3);
+	},1);
 }
 
 //---碰撞判断
 function Check(){
 	//---横向碰撞
-	if(ballx==0||ballx==880){
+	if(ballx<0||ballx>880){
+		console.log('**************************************');
+		flag++;
 		speedx=-speedx;
 	}
 	//---纵向碰撞
-	if(bally==400){
+	if(bally>360){
+		console.log('**************************************');
 		speedy=-speedy;
+		flag++;
+	}
+	//---撞板反弹
+	if(bally<10&&(ballx>bot.offsetLeft&&ballx<(bot.offsetLeft+200))){
+		console.log('**************************************');
+		speedy=-speedy;
+		flag++;
+	}
+	if(bally<-10){
+		clearInterval(timer);
+		alert('游戏失败');
+		ballx = 440;//球的横向坐标
+		bally = 10;//球的纵向坐标
+		speedx = 0;//球的横向速度
+		speedy = 0;//球的纵向速度
+		flag = 0;//碰撞次数
+		ranks = 1;//游戏等级
+		rank = 1;//速度等级
+		Rank.innerHTML = ranks;
+	}
+	if(flag==f){
+		flag=0;
+		f+=10;
+		rank= rank+rank*0.3;
+		ranks++;
+		Rank.innerHTML = ranks;
 	}
 }
 
@@ -78,5 +147,5 @@ function animate(ele,target){
 			ele.style.left = target+'px';
 			clearInterval(ele.timer);
 		}
-	},30);
+	},10);
 }
