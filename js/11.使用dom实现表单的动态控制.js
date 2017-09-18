@@ -30,13 +30,21 @@ function add(){
 		console.log(this.flag);
 		if(this.flag){
 			for(i=1;i<5;i++){
+				var tr1 = this.parentElement.parentElement;
+				var td1 = tr1.cells[i];
+				var addinp = document.createElement('input');
+				addinp.type = 'text';
+				addinp.value = td1.innerHTML;
+				td1.innerHTML = '';
+				td1.appendChild(addinp);
+				
 //				var addinp = document.createElement('input');
 //				addinp.type = 'text';
 //				addinp.value = this.parentNode.parentNode.childNodes[i].innerHTML;
 //				this.parentNode.parentNode.childNodes[i].appendChild(addinp);
-//				console.log(this.parentNode.parentNode.childNodes[i]);
+//				console.log(this.parentNode.parentNode.childNodes[i].children[0]);
 //				this.parentNode.parentNode.childNodes[i].innerHTML='';
-				this.parentNode.parentNode.childNodes[i].innerHTML = '<input type="text" value = "'+this.parentNode.parentNode.childNodes[i].innerHTML+'" />'
+//				this.parentNode.parentNode.childNodes[i].innerHTML = '<input type="text" value = "'+this.parentNode.parentNode.childNodes[i].innerHTML+'" />'
 			}
 			this.flag = false;
 			this.parentNode.parentNode.childNodes[5].innerHTML = '<select><option value="0">请选择电影类型</option><option value="喜剧">喜剧</option><option value="动作">动作</option><option value="科幻">科幻</option></select>'

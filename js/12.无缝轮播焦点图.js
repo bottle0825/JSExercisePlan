@@ -32,24 +32,24 @@ function autoPlay(){
 }
 
 //---焦点方法
-for(let i=0;i<5;i++){
-	lis[i].onmouseover = function(){
-		clearInterval(timerche);
-		var numche = -(i+1)*800;//---焦点的位置
-		timer = setInterval(function(){
-			num-=10;
-			numche++;
-			ul.style.left = num+'px';
-			if(num== -4800){
-				num = -800;
-			}
-			if(numche == 80){
-				numche = 0;
-				clearInterval(timer);
-			}
-		},20);
-	}
-}
+//for(let i=0;i<5;i++){
+//	lis[i].onmouseover = function(){
+//		clearInterval(timerche);
+//		var numche = -(i+1)*800;//---焦点的位置
+//		timer = setInterval(function(){
+//			num-=10;
+//			numche++;
+//			ul.style.left = num+'px';
+//			if(num== -4800){
+//				num = -800;
+//			}
+//			if(numche == 80){
+//				numche = 0;
+//				clearInterval(timer);
+//			}
+//		},20);
+//	}
+//}
 
 function Check(){
 	if((-num)%800 == 0){
@@ -63,6 +63,7 @@ function Check(){
 }
 
 show.onmouseover = function(){
+//	clearInterval(timer);
 	clearInterval(timerche);
 }
 show.onmouseout = function(){
