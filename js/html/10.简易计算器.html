@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>10.简易计算器</title>
+		<link rel="stylesheet" type="text/css" href="../css/bttn.css"/>
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-theme.css"/>
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css"/>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+				list-style: none;
+				box-sizing: border-box;
+			}
+			#show{
+				width: 400px;
+				height: 160px;
+				margin: 50px auto 0;
+				padding-top:50px ;
+				text-align: right;
+				background: #333333;
+				font-size: 80px;
+				color: #fff;
+			}
+			ul{
+				width: 400px;
+				height: 500px;
+				margin: 0 auto 50px;
+				background: #efefef;
+			}
+			li{
+				float: left;
+				width: 100px;
+				line-height: 98px;
+				text-align: center;
+				border: solid 1px #999;
+				font-size: 24px
+			}
+			li:nth-child(1),li:nth-child(2),li:nth-child(3){
+				background: #ddd;
+			}
+			li:nth-child(4),li:nth-child(8),li:nth-child(12),li:nth-child(16),li:nth-child(19){
+				background: #FEAB3A;
+			}
+			li:nth-child(17){
+				width: 200px;
+			}
+			.cli{
+				background: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>10.简易计算器</h1>
+		<a href="../index.html">返还打卡</a>
+		<hr />
+		<div class="content">
+			<div id="show">0</div>
+			<ul>
+				<li>AC</li>
+				<li>+/-</li>
+				<li>%</li>
+				<li>÷</li>
+				<li>7</li>
+				<li>8</li>
+				<li>9</li>
+				<li>x</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>-</li>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>+</li>
+				<li>0</li>
+				<li>.</li>
+				<li>=</li>
+			</ul>
+		</div>
+		<script src="../js/10.简易计算器.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

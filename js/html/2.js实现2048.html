@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>2048</title>
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-theme.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/animate.css"/>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				text-decoration: none;
+				list-style: none;
+			}
+			.main{
+				width: 434px;
+				height: 434px;
+				background: #C0C0C0;
+				border: solid #666 5px;
+			}
+			li{
+				float: left;
+				width: 106px;
+				height: 106px; 
+				margin: 0;
+				border: solid #666 3px;
+			}
+			p{
+				text-align: center;
+				line-height: 100px;
+				font-size: 40px;
+				font-weight:700 ;
+			}
+			.show{
+				width: 434px;
+			}
+			.show div{
+				width: 217px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="container">
+			<h1 class="page-header">自学js--2048</h1>
+			<a href="../index.html">返还打卡</a>
+			<div class="center-block main">
+				<ul>
+					<li>
+						<p id="p11"></p>
+					</li>
+					<li>
+						<p id="p12"></p>
+					</li>
+					<li>
+						<p id="p13"></p>
+					</li>
+					<li>
+						<p id="p14"></p>
+					</li>
+					<li>
+						<p id="p21"></p>
+					</li>
+					<li>
+						<p id="p22"></p>
+					</li>
+					<li>
+						<p id="p23"></p>
+					</li>
+					<li>
+						<p id="p24"></p>
+					</li>
+					<li>
+						<p id="p31"></p>
+					</li>
+					<li>
+						<p id="p32"></p>
+					</li>
+					<li>
+						<p id="p33"></p>
+					</li>
+					<li>
+						<p id="p34"></p>
+					</li>
+					<li>
+						<p id="p41"></p>
+					</li>
+					<li>
+						<p id="p42"></p>
+					</li>
+					<li>
+						<p id="p43"></p>
+					</li>
+					<li>
+						<p id="p44"></p>
+					</li>
+				</ul>
+			</div>
+			<div class="center-block show">
+				<div class="pull-left">
+					<h2>socre:</h2>
+					<h2 id="score"></h2>
+				</div>
+				<div class="pull-right">
+					<h2>Lv:</h2>
+					<h2 id="lv"></h2>
+				</div>
+				<button class="btn btn-block" onclick="Restart()">Restart</button>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="../js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+		<script src="../js/wow.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/2.js实现2048.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var wow = new WOW({
+			    boxClass: 'wow',
+			    animateClass: 'animated',
+			    offset: 0,
+			    mobile: true,
+			    live: true
+			});
+			wow.init();
+		</script>
+	</body>
+</html>

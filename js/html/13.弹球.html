@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>13.弹球</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				list-style: none;
+			}
+			.content{
+				position: relative;
+				width:920px;
+				height: 400px;
+				margin: 50px auto;
+				border: 10px solid #666;
+			}
+			#ball{
+				left: calc(50% - 10px);
+				bottom: 10px;
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				border: 10px solid #999;
+				border-radius:11px ;
+			}
+			#dot{
+				position: absolute;
+				left: calc(50% - 100px);
+				bottom: 0;
+				width:200px;
+				height: 380px;
+				border-bottom: 10px solid #999;
+			}
+			ul{
+				font-size: 0;
+			}
+			li{
+				display: inline-block;
+				width: 50px;
+				height: 380px;
+				/*border-bottom: 10px solid #999;*/
+			}
+			button{
+				display: block;
+				width: 200px;
+				height: 50px;
+				margin: 20px auto;
+				border: 3px solid #666;
+			}
+			.show{
+				width: 400px;
+				line-height: 50px;
+				margin: 10px auto;
+				font-size: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>13.弹球.html</h1>
+		<a href="../index.html">返还打卡</a>
+		<hr />
+		<div class="content">
+			<div id="ball"></div>
+			<div id="dot"></div>
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				
+			</ul>
+		</div>
+		<button>开始游戏</button>
+		<div class="show">
+			<span>LV:</span>
+			<span id="Rank">1</span>
+		</div>
+		<script src="../js/mypacketjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/13.弹球.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

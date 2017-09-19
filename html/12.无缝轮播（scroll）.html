@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			img{
+				width: 800px;
+				height: 400px;
+			}
+			#outer{
+				width: 800px;
+				height: 400px;
+				margin: 50px auto;
+				overflow: hidden;
+			}
+			#inner{
+				width: 5600px;
+				font-size: 0;
+			}
+			#toggle{
+				width: 150px;
+				margin: 10px auto;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/bttn.css"/>
+	</head>
+	<body>
+		<div id="outer">
+			<div id="inner">
+				<img src="../img/img5.jpg"/>
+				<img src="../img/img1.jpg"/>
+				<img src="../img/img2.jpg"/>
+				<img src="../img/img3.jpg"/>
+				<img src="../img/img4.jpg"/>
+				<img src="../img/img5.jpg"/>
+				<img src="../img/img1.jpg"/>
+			</div>
+		</div>
+		<div id="toggle">
+			<button class="bttn-fill bttn-success">向左</button>
+			<button class="bttn-fill bttn-success">向右</button>
+		</div>
+		<script type="text/javascript">
+			var outer = document.getElementById('outer');
+			var inner = document.getElementById('inner');
+			var img = inner.children;
+			var btn = document.getElementsByTagName('button');
+			var flag = 1;
+			var timer1 = null;
+			var timer2 = null;
+			var timer3 = null;
+			var timer4 = null;
+			var imgsw = img[0].offsetWidth*6;//--五张图片宽度
+			
+			outer.scrollLeft = 800;
+			//---运动函数
+			function RunLeft(){
+				outer.scrollLeft++;
+				if(outer.scrollLeft==imgsw){
+					outer.scrollLeft = 800;
+				}
+				if(outer.scrollLeft%img[0].offsetWidth==0){
+					//---如果滚动到显示一张图片时，延时2s
+					clearTimer();
+					timer2 = setTimeout(function(){
+						timer1 = setInterval(RunLeft,3);
+					},2000);
+				}
+			}
+			timer1 = setInterval(RunLeft,3);
+			function RunRight(){
+				outer.scrollLeft--;
+				if(outer.scrollLeft==0){
+					outer.scrollLeft = 4000;
+				}
+				if(outer.scrollLeft%img[0].offsetWidth==0){
+					//---如果滚动到显示一张图片时，延时2s
+					clearTimer();
+					timer4 = setTimeout(function(){
+						timer3 = setInterval(RunRight,3);
+					},2000);
+				}
+			}
+			//---清除定时器
+			function clearTimer(){
+				clearInterval(timer1);
+				clearTimeout(timer2);
+				clearInterval(timer3);
+				clearTimeout(timer4);
+			};
+			//---控制移动
+			btn[0].onclick = function(){
+				//---每次点击可能会与上次定时器冲突
+				clearTimer();
+				flag = 1;
+				timer1 = setInterval(RunLeft,3);
+			};
+			btn[1].onclick = function(){
+				clearTimer();
+				flag = 0;
+				timer3 = setInterval(RunRight,3);
+			};
+			outer.onmouseover = function(){
+				clearTimer();
+			}
+			outer.onmouseout = function(){
+				if(flag==1){
+					timer1 = setInterval(RunLeft,3);
+				}else{
+					timer3 = setInterval(RunRight,3);
+				}
+			}
+		</script>
+	</body>
+</html>

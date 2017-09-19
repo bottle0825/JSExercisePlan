@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>12.无缝轮播焦点图</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#show{
+				position: relative;
+				cursor: pointer;
+				overflow: hidden;
+				width: 800px;
+				height: 400px;
+				margin: 50px auto;
+				font-size: 0;
+			}
+			#show .Roll{
+				width:700%;
+				position: absolute;
+				left:-800px;
+				top:0px;
+			}
+			#show .Roll li{
+				display: inline-block;
+				width: 800px;
+				height: 400px;
+			}
+			#show .Roll li img{
+				width: 800px;
+				height: 400px;
+			}
+			#left,#right{
+				position: absolute;
+				width: 60px;
+				line-height: 400px;
+				cursor: pointer;
+				color: rgba(255,255,255,.7);
+				text-align: center;
+				font-size: 50px
+			}
+			#left{
+				position: absolute;
+				left: 0;
+				float: left;
+				background-image:linear-gradient(to left,rgba(0,0,0,0),rgba(0,0,0,.5)) ;
+			}
+			#right{
+				position: absolute;
+				right: 0;
+				float: right;
+				background-image:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.5)) ;
+			}
+			#show .che{
+				position: absolute;
+				bottom: 10px;
+				left: calc(50% - 35px);
+			}
+			#show .che li{
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				margin: 2px;
+				background: rgba(100,100,100,.5);
+				border-radius:5px ;
+				text-align: center;
+				cursor: pointer;
+			}
+			#show .che .sel{
+				background: rgba(255,255,255,.7);
+			}
+		</style>
+	</head>
+	<body>
+		<h1>12.无缝轮播焦点图</h1>
+		<a href="../index.html">返还打卡</a>
+		<hr />
+		<div id="show">
+			<ul class="Roll">
+				<li><img src="../img/img5.jpg"/></li>
+				<li><img src="../img/img1.jpg"/></li>
+				<li><img src="../img/img2.jpg"/></li>
+				<li><img src="../img/img3.jpg"/></li>
+				<li><img src="../img/img4.jpg"/></li>
+				<li><img src="../img/img5.jpg"/></li>
+				<li><img src="../img/img1.jpg"/></li>
+			</ul>
+			<div id="left">&laquo;</div>
+			<div id="right">&raquo;</div>
+			<ul class="che">
+				<li class="sel"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<script src="../js/12.无缝轮播焦点图.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
