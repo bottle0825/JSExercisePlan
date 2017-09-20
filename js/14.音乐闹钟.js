@@ -16,12 +16,151 @@ timer = setInterval(function(){
 	nums[7].style.backgroundImage = 'url(../img/num/'+(s%10)+'.JPG)';
 },1000);
 
+//---模态框显示
+var mubu = document.getElementsByClassName('mubu')[0];
+var cc = document.getElementsByClassName('cc')[0];
+var cm = document.getElementsByClassName('cm')[0];
 
 //---音乐播放器
 var music = document.getElementsByClassName('music')[0];
 var aud = music.children[1];
 var audshow = music.children[0];
+var audbtn = music.children[2];
 var musicName = aud.src;
 var index = musicName.search('music/');
-musicName = musicName.slice(index+6,musicName.length-1);
-audshow.innerHTML = musicName;
+musicName = musicName.slice(index+6,musicName.length-1);//根据音乐的地址获取音乐名
+audshow.innerHTML = musicName;//显示音乐名
+audbtn.onclick = function(){//开启音乐选择界面
+	mubu.style.display = 'block';
+	cm.style.display = 'block';
+};
+var musicList = document.getElementById('musiclist');
+//选择歌曲并关闭模态框
+cm.children[3].onclick = function(){
+	aud.src = '../music/'+musicList.value;
+	audshow.innerHTML = musicList.value;
+	mubu.style.display = 'none';
+	cm.style.display = 'none';
+};
+//关闭模态框
+cm.children[4].onclick = function(){
+	mubu.style.display = 'none';
+	cm.style.display = 'none';
+};
+
+
+
+//闹钟功能
+var closeclick = document.getElementById('closeClock')
+var createclick = document.getElementById('createClock');
+var changeclick = document.getElementById('changeclick');
+var deletClock = document.getElementById('deletClock');
+var listClock = document.getElementById('listClock');
+
+//创建闹钟
+createclick.onclick = function(){
+	mubu.style.display = 'block';
+	cc.style.display = 'block';
+}
+var hourList = document.getElementById('hourslist');
+var minutelist = document.getElementById('minutelist');
+var chour = 0;
+var cminute = 0;
+//生成小时数选项
+for(var i = 1;i<25;i++){
+	hourList.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+}
+//生成分钟数选项
+for(var i = 1;i<61;i++){
+	minutelist.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+}
+//点击获取时间，并记录在显示面板
+cc.children[5].onclick = function(){
+	chour = hourList.value;
+	cminute = minutelist.value;
+	var newClick = document.createElement('li');
+	newClick.innerHTML = chour+':'+cminute;
+	listClock.appendChild(newClick);
+	cliL();
+	mubu.style.display = 'none';
+	cc.style.display = 'none';
+}
+cc.children[6].onclick = function(){
+	mubu.style.display = 'none';
+	cc.style.display = 'none';
+}
+
+//拖动模态框
+var targetx = 0;
+var targety = 0;
+var leaderx = 0;
+var leadery = 0;
+var timerDrop = null;
+//cc.children[0].onmousedown = Drop(event);
+//cm.children[0].onmousedown = Drop(event);
+console.log(cc);
+console.log(cc.children[0].parentNode);
+Drop(cc);
+Drop(cm);
+
+//封装拖动函数
+function Drop(obj){
+	obj.onmousedown = function(event){
+		Event = event||window.event;
+		var px = Event.pageX;
+		var py = Event.pageY;
+		var x = px-obj.offsetLeft;
+		var y = py-obj.offsetTop;
+		document.onmousemove = function(event){
+			Event = event||window.event;
+			targetx = Event.pageX - x;
+			targety = Event.pageY - y;
+			obj.style.left = targetx + 'px';
+			obj.style.top = targety + 'px';
+		};
+		window.getSelection?window.getSelection().removeAllRanges():document.selection.empty();
+		document.onmouseup = function(){
+			document.onmouseup = null;
+			document.onmousemove = null;
+		};
+	}
+}
+
+//设定闹钟列表
+var bar = document.getElementById('bar');
+var cbox = document.getElementById('cbox');
+var scro = document.getElementById('scro');
+function cliL(){
+	var barh = scro.offsetHeight*(cbox.offsetHeight+40)/listClock.offsetHeight;
+	if(barh<240){
+		bar.style.height = barh + 'px';
+	}
+	bar.onmousedown = function(event){
+		var Event = event||window.event;
+		
+		var py = Event.pageY||scroll().top+Event.clientY;
+		var y = py-bar.offsetTop;
+		document.onmousemove = function(event){
+			var Event = event||window.event;
+			var pyy = Event.pageY||scroll().top+Event.clientY;
+			pyy = pyy-y;
+			if(pyy<0){
+				pyy=0;
+			}else if(pyy>scro.offsetHeight-bar.offsetHeight){
+				pyy=scro.offsetHeight-bar.offsetHeight;
+			}
+			console.log(pyy);
+			bar.style.top = pyy + 'px';
+			
+			var compare = pyy*(listClock.offsetHeight-cbox.offsetHeight+40)/(scro.offsetHeight-bar.offsetHeight);
+			listClock.style.marginTop = -compare+'px';
+			//禁止文本选中
+			window.getSelection?window.getSelection().removeAllRanges():document.selection.empty();
+		}
+		document.onmouseup = function(){
+			document.onmousedown = null;
+			document.onmousemove = null;
+		}
+		
+	};
+}
