@@ -51,7 +51,7 @@ btn[0].onclick = function(){
 	clearInterval(timer);
 	btn[1].innerHTML = '开始计时';
 	flag = false;
-	mb[1].innerHTML = '';
+	mb[0].innerHTML = '记录秒表时间：';
 	count = 0;
 	scount = 0;
 	mcount = 0;

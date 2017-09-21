@@ -7,17 +7,55 @@ function hide(obj) {
  obj.style.display = "none";
 }
 //缓动动画封装
-function animate(ele,target) {
-    clearInterval(ele.timer);
-    ele.timer = setInterval(function () {
-        var step = (target-ele.offsetLeft)/10;
-        step = step>0?Math.ceil(step):Math.floor(step);
-        ele.style.top = ele.offsetLeft + step + "px";
-        if(Math.abs(target - obj.offsetLeft)<Math.abs(step)){
-            ele.style.top = target + "px";
-            clearInterval(ele.timer);
-        }
-    },25);
+function animate(ele,json){
+	clearInterval(ele.timer);
+	ele.timer = setInterval(function(){
+		var flag = true;
+		//---遍历json，取其中的值
+		//key--attr,json[key]--target
+		for(var k in json){
+			//--获取初始值的位置或者属性
+			if(k==='opacity'){//属性为opacity
+				var leader = getStyle(ele,k)*100||1;
+			}else{
+				var leader = parseInt(getStyle(ele,k))||0;
+			}
+			//---步长
+			var step = (json[k]-leader)/10;
+			step = step>0?Math.ceil(step):Math.floor(step);
+			leader = leader + step;
+			//---属性赋值
+			//---先判断opacity情况
+			if(k==='opacity'){
+				//---谷歌、火狐
+				ele.style[k] = leader/100;
+				//---IE
+				ele.style.filter = 'alpha(opacity = '+leader+')';
+			}else if(k==='zIndex'){
+				ele.style.zIndex = json[k];
+			}else{
+				ele.style[k] = leader + 'px';	
+			}
+			//---判断临界条件
+			//---判断json中的每个目标值是否到达终点
+			if(json[k]!==leader){
+				flag = false;//代表还没运动完
+			}
+		}
+		if(flag){//---已经走完就清除定时器
+			clearInterval(ele.timer);
+			if(fn){
+				fn();
+			}
+		}
+	},20);
+}
+//获取css属性封装
+function getStyle(ele,attr){//---元素，属性
+	if(window.getComputedStyle(ele,null)){
+		return window.getComputedStyle(ele,null)[attr];
+	}
+	return ele.currentStyle[attr];
 }
 //---scroll封装
 function scroll() {  // 开始封装自己的scrollTop
