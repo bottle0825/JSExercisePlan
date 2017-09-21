@@ -33,61 +33,138 @@ audshow.innerHTML = musicName;//显示音乐名
 audbtn.onclick = function(){//开启音乐选择界面
 	mubu.style.display = 'block';
 	cm.style.display = 'block';
+	var musicList = document.getElementById('musiclist');
+	//选择歌曲并关闭模态框
+	cm.children[3].onclick = function(){
+		aud.src = '../music/'+musicList.value;
+		audshow.innerHTML = musicList.value;
+		mubu.style.display = 'none';
+		cm.style.display = 'none';
+	};
+	//关闭模态框
+	cm.children[4].onclick = function(){
+		mubu.style.display = 'none';
+		cm.style.display = 'none';
+	};
 };
-var musicList = document.getElementById('musiclist');
-//选择歌曲并关闭模态框
-cm.children[3].onclick = function(){
-	aud.src = '../music/'+musicList.value;
-	audshow.innerHTML = musicList.value;
-	mubu.style.display = 'none';
-	cm.style.display = 'none';
-};
-//关闭模态框
-cm.children[4].onclick = function(){
-	mubu.style.display = 'none';
-	cm.style.display = 'none';
-};
+
 
 
 
 //闹钟功能
-var closeclick = document.getElementById('closeClock')
-var createclick = document.getElementById('createClock');
-var changeclick = document.getElementById('changeclick');
+var closeClock = document.getElementById('closeClock');
+var createClock = document.getElementById('createClock');
+var changeClock = document.getElementById('changeClock');
 var deletClock = document.getElementById('deletClock');
 var listClock = document.getElementById('listClock');
-
+var arrClick = [];
 //创建闹钟
-createclick.onclick = function(){
+createClock.onclick = function(){
 	mubu.style.display = 'block';
 	cc.style.display = 'block';
+	var hourList = document.getElementById('hourslist');
+	var minutelist = document.getElementById('minutelist');
+	var chour = 0;
+	var cminute = 0;
+	//生成小时数选项
+	for(var i = 1;i<25;i++){
+		hourList.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+	}
+	//生成分钟数选项
+	for(var i = 1;i<61;i++){
+		minutelist.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+	}
+	//点击获取时间，并记录在显示面板
+	cc.children[5].onclick = function(){
+		chour = hourList.value;
+		cminute = minutelist.value;
+		arrClick.push({hour:chour,minute:cminute});
+		var newClick = document.createElement('li');
+		newClick.innerHTML = chour+':'+cminute;
+		listClock.appendChild(newClick);
+		cliL();
+		checkClick();
+		mubu.style.display = 'none';
+		cc.style.display = 'none';
+	};
+	cc.children[6].onclick = function(){
+		mubu.style.display = 'none';
+		cc.style.display = 'none';
+	};
+};
+
+//选中时钟列表
+var lifc = null;
+function checkClick(){
+	var liClick = listClock.children;
+	lifc = null;
+	for(let i=0;i<liClick.length;i++){
+		for(var j=0;j<liClick.length;j++){
+			liClick[j].style.backgroundColor = '#333';
+			liClick[j].style.color = '#F89001';
+		}
+		liClick[i].onclick = function(){
+			for(var j=0;j<liClick.length;j++){
+				lifc = null;
+				liClick[j].style.backgroundColor = '#333';
+				liClick[j].style.color = '#F89001';
+			}
+			lifc = i;
+			this.style.backgroundColor = '#ddd';
+			this.style.color = '#333';
+		};
+	}
 }
-var hourList = document.getElementById('hourslist');
-var minutelist = document.getElementById('minutelist');
-var chour = 0;
-var cminute = 0;
-//生成小时数选项
-for(var i = 1;i<25;i++){
-	hourList.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+//修改闹钟功能
+changeClock.onclick = function(){
+	if(lifc!==null){
+		mubu.style.display = 'block';
+		cc.style.display = 'block';
+		var liClick = listClock.children;
+		var hourList = document.getElementById('hourslist');
+		var minutelist = document.getElementById('minutelist');
+		var chour = 0;
+		var cminute = 0;
+		//生成小时数选项
+		for(var i = 1;i<25;i++){
+			hourList.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+		}
+		//生成分钟数选项
+		for(var i = 1;i<61;i++){
+			minutelist.innerHTML += "<option value='"+i+"'>"+i+"</option>"
+		}
+		//点击获取时间，并记录在显示面板
+		cc.children[5].onclick = function(){
+			chour = hourList.value;
+			cminute = minutelist.value;
+			arrClick[lifc] = {hour:chour,minute:cminute};
+			liClick[lifc].innerHTML =  chour+':'+cminute;
+			liClick[lifc].style.backgroundColor = '#333';
+			liClick[lifc].style.color = '#F89001';
+			lifc = null;
+			console.log(arrClick);
+			mubu.style.display = 'none';
+			cc.style.display = 'none';
+		};
+		cc.children[6].onclick = function(){
+			mubu.style.display = 'none';
+			cc.style.display = 'none';
+		};
+	}else{
+		alert('请选择要修改的闹钟');
+	}
 }
-//生成分钟数选项
-for(var i = 1;i<61;i++){
-	minutelist.innerHTML += "<option value='"+i+"'>"+i+"</option>"
-}
-//点击获取时间，并记录在显示面板
-cc.children[5].onclick = function(){
-	chour = hourList.value;
-	cminute = minutelist.value;
-	var newClick = document.createElement('li');
-	newClick.innerHTML = chour+':'+cminute;
-	listClock.appendChild(newClick);
-	cliL();
-	mubu.style.display = 'none';
-	cc.style.display = 'none';
-}
-cc.children[6].onclick = function(){
-	mubu.style.display = 'none';
-	cc.style.display = 'none';
+//删除闹钟功能
+deletClock.onclick = function(){
+	if(lifc!==null){
+		var liClick = listClock.children;
+		liClick[lifc].remove();
+		arrClick.splice(lifc,1);
+		lifc = null;
+		console.log(arrClick);
+	}else{
+		alert('请选择要删除的闹钟');
+	}
 }
 
 //拖动模态框
@@ -149,7 +226,6 @@ function cliL(){
 			}else if(pyy>scro.offsetHeight-bar.offsetHeight){
 				pyy=scro.offsetHeight-bar.offsetHeight;
 			}
-			console.log(pyy);
 			bar.style.top = pyy + 'px';
 			
 			var compare = pyy*(listClock.offsetHeight-cbox.offsetHeight+40)/(scro.offsetHeight-bar.offsetHeight);
