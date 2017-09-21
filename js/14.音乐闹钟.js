@@ -1,8 +1,14 @@
 
+var arrClick = [];//闹钟记录数组
 //---时间显示器
 var showTime = document.getElementById('show');
 var nums = showTime.children;
 var timer = null;//初始化计时器
+//---音乐播放器
+var music = document.getElementsByClassName('music')[0];
+var aud = music.children[1];
+var audshow = music.children[0];
+var audbtn = music.children[2];
 timer = setInterval(function(){
 	var myDate = new Date();//获取当前时间
 	var h = myDate.getHours();//当前小时数
@@ -14,18 +20,22 @@ timer = setInterval(function(){
 	nums[4].style.backgroundImage = 'url(../img/num/'+(m%10)+'.JPG)';
 	nums[6].style.backgroundImage = 'url(../img/num/'+Math.floor(s/10)+'.JPG)';
 	nums[7].style.backgroundImage = 'url(../img/num/'+(s%10)+'.JPG)';
+			console.log(arrClick.length);
+	//判断是否奏响闹钟
+	for(var i=0;i<arrClick.length;i++){
+		if(arrClick[i].hour==h && arrClick[i].minute==m && s==0){
+			aud.play();
+		}
+	}
 },1000);
+console.log(aud);
 
 //---模态框显示
 var mubu = document.getElementsByClassName('mubu')[0];
 var cc = document.getElementsByClassName('cc')[0];
 var cm = document.getElementsByClassName('cm')[0];
 
-//---音乐播放器
-var music = document.getElementsByClassName('music')[0];
-var aud = music.children[1];
-var audshow = music.children[0];
-var audbtn = music.children[2];
+//---音乐播放器控制
 var musicName = aud.src;
 var index = musicName.search('music/');
 musicName = musicName.slice(index+6,musicName.length-1);//根据音乐的地址获取音乐名
@@ -57,7 +67,6 @@ var createClock = document.getElementById('createClock');
 var changeClock = document.getElementById('changeClock');
 var deletClock = document.getElementById('deletClock');
 var listClock = document.getElementById('listClock');
-var arrClick = [];
 //创建闹钟
 createClock.onclick = function(){
 	mubu.style.display = 'block';
@@ -161,10 +170,13 @@ deletClock.onclick = function(){
 		liClick[lifc].remove();
 		arrClick.splice(lifc,1);
 		lifc = null;
-		console.log(arrClick);
 	}else{
 		alert('请选择要删除的闹钟');
 	}
+}
+//关闭闹钟功能
+closeClock.onclick = function(){
+	aud.pause();
 }
 
 //拖动模态框
