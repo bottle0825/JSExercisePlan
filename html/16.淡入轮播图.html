@@ -53,6 +53,7 @@
 				right: 10px;
 				line-height: 20px;
 				text-align: center;
+				z-index: 999;
 			}
 			.box ol li{
 				float: left;
@@ -79,6 +80,7 @@
 				font-family: '黑体';
 				text-align: center;
 				cursor: pointer;
+				z-index: 999;
 			}
 			.slide:hover>#arr>span{
 				opacity: .3;
@@ -155,13 +157,7 @@
 			
 			//图片淡入动画
 			function floatIn(num){
-				console.log(num);
-				for(var i=0;i<imgSrc.length;i++){
-					ollis[i].className = '';
-					ullis[i].style.opacity =0;
-					ullis[i].style.filter ='alpha(opacity=0)';
-				}
-				ollis[num].className = 'current';
+				ullis[num].style.zIndex = 1;
 				clearInterval(timer1);
 				var opa = 0;
 				timer1 = setInterval(function(){
@@ -170,6 +166,13 @@
 						opa=100;
 						flag=true;
 						clearInterval(timer1);
+						for(var i=0;i<imgSrc.length;i++){
+							ollis[i].className = '';
+							ullis[i].style.zIndex = 0;
+							ullis[i].style.opacity =0;
+							ullis[i].style.filter ='alpha(opacity=0)';
+						}
+						ollis[num].className = 'current';
 					}
 					ullis[num].style.opacity = opa/100;
 					ullis[num].style.filter = 'alpha(opacity='+opa+')';
@@ -204,9 +207,11 @@
 			//点击下标跳转
 			for(let i=0;i<imgSrc.length;i++){
 				ollis[i].onclick = function(){
-					num = i;
-					flag=false;
-					floatIn(num);
+					if(flag){
+						num = i;
+						flag=false;
+						floatIn(num);
+					}
 				}
 			}
 			
@@ -214,7 +219,7 @@
 			arrspans[0].onclick = function(){
 				if(flag){
 					num--;
-					if(num<=0){
+					if(num<0){
 						num=imgSrc.length-1;
 					}
 					flag=false;
