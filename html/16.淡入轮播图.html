@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>16.淡入轮播图</title>
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<script src="../js/myPackage.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.outer{
+				width: 100%;
+				height: 550px;
+				background: url(../img/mibg.jpg)center no-repeat;
+				background-size: cover;
+			}
+			.box{
+				padding-top: 50px;
+				width: 100%;
+				height: 500px;
+				background: rgba(0,0,0,.5);
+			}
+			/*内部子集以silder定位*/
+			.slide{
+				width: 1000px;
+				height: 400px;
+				margin: 0px auto;
+				position: relative;
+				background: #fff;
+				overflow: hidden;
+				cursor: pointer;
+			}
+			.slide ul li{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 1000px;
+				height: 400px;
+				/*默认所有图片透明度为0*/
+				opacity: 0;
+				filter: alpha(opacity=0);
+			}
+			.slide ul li img{
+				width: 1000px;
+				height: 400px;
+			}
+			.slide ul li.show{
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+			/*数字下标*/
+			.box ol{
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+				line-height: 20px;
+				text-align: center;
+			}
+			.box ol li{
+				float: left;
+				width: 20px;
+				height: 20px;
+				margin: 5px;
+				border-radius: 50%;
+				background: #fff;
+			}
+			.box ol li.current{
+				background: darkorange;
+			}
+			#arr span{
+				position: absolute;
+				height: 60px;
+				line-height: 60px;
+				width: 50px;
+				background: #000000;
+				color: white;
+				font-size: 30px;
+				font-weight: bold;
+				opacity: 0;
+				filter: alpha(opacity=0);
+				font-family: '黑体';
+				text-align: center;
+				cursor: pointer;
+			}
+			.slide:hover>#arr>span{
+				opacity: .3;
+				filter: alpha(opacity=30);
+			}
+			#left{
+				left: 5px;
+				top: calc(50% - 30px);
+			}
+			#right{
+				right: 5px;
+				top: calc(50% - 30px);
+			}
+		</style>
+	</head>
+	<body>
+		<h1>16.淡入轮播图</h1>
+		<a href="../index.html">返还打卡</a>
+		<hr />
+		<div id="outer" class="outer">
+			<div id="box" class="box">
+				<div id="slide" class="slide">
+					<!--5张轮播图-->
+					<ul id="ul"></ul>
+					<!--数字下标-->
+					<ol></ol>
+					<!--左右切换按钮-->
+					<div id="arr">
+						<span id="left">
+							<<
+						</span>
+						<span id="right">
+							>>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var slide = document.getElementById('slide');
+			var ul = slide.children[0];
+			var ullis = ul.children;
+			var ol = slide.children[1];
+			var ollis = ol.children;
+			var arr = slide.children[2];
+			var arrspans = arr.children;
+			var num = 0;//记录轮播的图片序号
+			var flag = true;//确保动画完成
+			var timer1 = null;//淡入动画定时器
+			var timer2 = null;//轮播控制定时器
+			
+			//将图片地址存入数组，并创建节点插入页码
+			var imgSrc = ["../img/1.jpg","../img/2.jpg","../img/3.jpg","../img/4.jpg","../img/5.jpg"];
+			var fragmentUl = document.createDocumentFragment();//创建文档片段缓存轮播图组件
+			for(var i=0;i<imgSrc.length;i++){
+				var newUlLi = document.createElement('li');
+				var newImg = document.createElement('img');
+				newImg.src = imgSrc[i];
+				newUlLi.appendChild(newImg);
+				fragmentUl.appendChild(newUlLi);
+			}
+			ul.appendChild(fragmentUl);
+			ullis[0].className = 'show';
+			//根据图片数量创建下标
+			var fragmentOl = document.createDocumentFragment();
+			for(var i=0;i<imgSrc.length;i++){
+				var newOlLi = document.createElement('li');
+				newOlLi.innerHTML = i+1;
+				fragmentOl.appendChild(newOlLi);
+			}
+			ol.appendChild(fragmentOl);
+			console.log(ollis);
+			ollis[0].className = 'current';
+			
+			//图片淡入动画
+			function floatIn(num){
+				console.log(num);
+				for(var i=0;i<imgSrc.length;i++){
+					ollis[i].className = '';
+					ullis[i].style.opacity =0;
+					ullis[i].style.filter ='alpha(opacity=0)';
+				}
+				ollis[num].className = 'current';
+				clearInterval(timer1);
+				var opa = 0;
+				timer1 = setInterval(function(){
+					opa+=2;
+					if(opa>=100){
+						opa=100;
+						flag=true;
+						clearInterval(timer1);
+					}
+					ullis[num].style.opacity = opa/100;
+					ullis[num].style.filter = 'alpha(opacity='+opa+')';
+				},10);
+			}
+			
+			//自动播放函数
+			function autoPlay(){
+				if(flag){
+					num++;
+					if(num>=imgSrc.length){
+						num=0;
+					}
+					flag=false;
+					floatIn(num);
+				}
+			}
+			timer2 = setInterval(function(){
+				autoPlay();
+			},3000);
+			
+			//鼠标悬停
+			slide.onmouseover = function(){
+				clearInterval(timer2);
+			}
+			slide.onmouseout = function(){
+				timer2 = setInterval(function(){
+					autoPlay();
+				},3000);
+			}
+			
+			//点击下标跳转
+			for(let i=0;i<imgSrc.length;i++){
+				ollis[i].onclick = function(){
+					num = i;
+					flag=false;
+					floatIn(num);
+				}
+			}
+			
+			//左右跳转
+			arrspans[0].onclick = function(){
+				if(flag){
+					num--;
+					if(num<=0){
+						num=imgSrc.length-1;
+					}
+					flag=false;
+					floatIn(num);
+				}
+			}
+			arrspans[1].onclick = function(){
+				autoPlay();
+			}
+		</script>
+	</body>
+</html>
