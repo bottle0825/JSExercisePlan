@@ -7,43 +7,44 @@ function hide(obj) {
  obj.style.display = "none";
 }
 //缓动动画封装
-function animate(ele,json){
-	clearInterval(ele.timer);
-	ele.timer = setInterval(function(){
-		var flag = true;
-		//---遍历json，取其中的值
-		//key--attr,json[key]--target
-		for(var k in json){
-			//--获取初始值的位置或者属性
-			if(k==='opacity'){//属性为opacity
-				var leader = getStyle(ele,k)*100||1;
-			}else{
-				var leader = parseInt(getStyle(ele,k))||0;
-			}
-			//---步长
-			var step = (json[k]-leader)/10;
-			step = step>0?Math.ceil(step):Math.floor(step);
-			leader = leader + step;
-			//---属性赋值
-			//---先判断opacity情况
-			if(k==='opacity'){
-				//---谷歌、火狐
-				ele.style[k] = leader/100;
-				//---IE
-				ele.style.filter = 'alpha(opacity = '+leader+')';
-			}else if(k==='zIndex'){
-				ele.style.zIndex = json[k];
-			}else{
-				ele.style[k] = leader + 'px';	
-			}
-			//---判断临界条件
-			//---判断json中的每个目标值是否到达终点
-			if(json[k]!==leader){
-				flag = false;//代表还没运动完
-			}
+function animate(ele,json,fn){
+clearInterval(ele.timer);
+ele.timer = setInterval(function(){
+	var flag = true;
+	//---遍历json，取其中的值
+	//key--attr,json[key]--target
+	for(var k in json){
+		//--获取初始值的位置或者属性
+		if(k==='opacity'){//属性为opacity
+			var leader = getStyle(ele,k)*100||1;
+		}else{
+			var leader = parseInt(getStyle(ele,k))||0;
 		}
-		if(flag){//---已经走完就清除定时器
-			clearInterval(ele.timer);
+		//---步长
+		var step = (json[k]-leader)/10;
+		step = step>0?Math.ceil(step):Math.floor(step);
+		leader = leader + step;
+		//---属性赋值
+		//---先判断opacity情况
+		if(k==='opacity'){
+			//---谷歌、火狐
+			ele.style[k] = leader/100;
+			//---IE
+			ele.style.filter = 'alpha(opacity = '+leader+')';
+		}else if(k==='zIndex'){
+			ele.style.zIndex = json[k];
+		}else{
+			ele.style[k] = leader + 'px';	
+		}
+		//---判断临界条件
+		//---判断json中的每个目标值是否到达终点
+		if(json[k]!==leader){
+			flag = false;//代表还没运动完
+		}
+	}
+	if(flag){//---已经走完就清除定时器
+		clearInterval(ele.timer);
+		//---只要有回调就直接调用
 			if(fn){
 				fn();
 			}
@@ -196,5 +197,22 @@ function Drop(head,body){
 			document.onmousemove = null;
 			document.onmouseup = null;
 		}
+	}
+}
+
+//Dom2事件绑定兼容封装
+function addEventHandler(obj,type,fn){
+	if(obj.addEventListener){
+		obj.addEventListener(type,fn,false);//默认冒泡
+	}else{
+		obj.attachEvent('on'+type,fn);
+	}
+}
+//Dom2事件删除兼容封装
+function removeEventHandler(obj,type,fn){
+	if(obj.removeEventListener){
+		obj.removeEventListener(type,fn,false);//默认冒泡
+	}else{
+		obj.detachEvent('on'+type,fn);
 	}
 }
