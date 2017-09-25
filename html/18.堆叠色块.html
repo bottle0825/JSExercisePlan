@@ -48,15 +48,8 @@
 			}
 			.main div{
 				position: absolute;
-			}
-			.test{
-				left: 0;
-				bottom: 0;
 				width: 80px;
 				height: 50px;
-				background: #9ACFEA;
-				text-align: center;
-				font-size: 20px;
 			}
 		</style>
 	</head>
@@ -81,9 +74,86 @@
 				<button class="bttn-danger bttn-fill">记录</button>
 				<br />
 			</div>
-			<div class="main" id'main'>
-				<div class="test">测试模块</div>
+			<div class="main" id='main'>
+				
 			</div>
 		</div>
+		<script type="text/javascript">
+			var btn = document.getElementsByTagName('button');
+			var main = document.getElementById('main');
+			var color = ['#ffffcc','#ffff99','#ffcc33','#ff9900','#ff6600'];
+			var brick = main.children;
+			var cols = new Array();//初始化航道数组
+			var col = 2;//初始化航道为3
+			var speed = 2;//初始化速度为10
+			var bar = 3;//初始化随机模块为3种
+			var Lv = 1;
+			var score = 0;
+			var timer1 = null;//砖块下降定时器
+			var timer2 = null;//砖块左右移动定时器
+			//初始化航道
+			for(var i=0;i<5;i++){
+				cols[i] = new Array();
+			}
+			
+			//点击开始
+			btn[0].onclick = function(){
+				Create();
+			}
+			
+			//键盘事件
+			document.onkeydown = function(event){
+				var Event = event|window.event;
+				switch(Event.keyCode){
+					case 37://左方向键
+						break;
+					case 39://右方向键
+						break;
+					case 40://下方向键
+						break;
+				}
+			}
+			
+			//生成色块
+			function Create(){
+				var r = Math.floor(Math.random()*(bar));
+				var newbrick = document.createElement('div');
+				newbrick.style.backgroundColor = color[r];
+				newbrick.style.left = '160px';
+				newbrick.style.top = '0';
+				main.appendChild(newbrick);
+				console.log(brick[brick.length-1]);
+				Move(brick[brick.length-1]);
+			}
+			//色块下降
+			function Move(ele){
+				var bt = 0; 
+				var target = 550;
+				timer1 = setInterval(function(){
+					bt+=speed;
+					ele.style.top = bt+'px';
+					if(bt == target){
+						clearInterval(timer1);
+					}
+				},10);
+			}
+			//左右移动
+			function Change(ele,dir){
+				var bl = col*80;
+				if(dir){
+					col = col==0?0:col-1;
+				}else{
+					col = col==4?4:col+1;
+				}
+				timer2 = setInterval(function(){
+					bl+=10;
+					ele.style.top = bl+'px';
+					if(bt == col*80){
+						clearInterval(timer2);
+					}
+				},10);
+			}
+			
+		</script>
 	</body>
 </html>
