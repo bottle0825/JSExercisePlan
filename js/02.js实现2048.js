@@ -1,4 +1,25 @@
+//2048
+var color = ['#efefef','#ffffcc','#ffff99','#ffff66','#ffcc33','#ffcc00','#ff9900','#ff9933','#ff6600','#cc6600','#cc9933','#663300'];
+var lis = document.getElementsByTagName('li');
 Restart();
+console.log(color[0]);
+//上色
+function setColor(){
+	for(var i=0;i<16;i++){
+		lis[i].style.backgroundColor = color[0];
+		for(var j=1;j<12;j++){
+			if(nums[i].con==Math.pow(2,j)){
+				lis[i].style.backgroundColor = color[j];
+				console.log('*******');
+			}
+			if(nums[i].con==2048){
+				lis[i].style.color = '#fff';
+			}
+		}
+	}
+}
+
+//鼠标操作
 document.onkeydown=function(event){
 var e = event || window.event || arguments.callee.caller.arguments[0];
   	if(e && e.keyCode==37){ //按左键 
@@ -19,6 +40,7 @@ var e = event || window.event || arguments.callee.caller.arguments[0];
 	    	}
 	    }
 	    Move();
+	    setColor();
     }
 	if(e && e.keyCode==38){ //按上键 
      //要做的事情
@@ -38,6 +60,7 @@ var e = event || window.event || arguments.callee.caller.arguments[0];
 	    	}
 	    }
 	    Move();
+	    setColor();
     }
          
 	if(e && e.keyCode==39){ //按右键
@@ -58,6 +81,7 @@ var e = event || window.event || arguments.callee.caller.arguments[0];
 	    	}
 	    }
 	    Move();
+	    setColor();
     }
     
 	if(e && e.keyCode==40){ //按下键
@@ -78,6 +102,7 @@ var e = event || window.event || arguments.callee.caller.arguments[0];
 	    	}
 	    }
 	    Move();
+	    setColor();
     }
    
 }; 
@@ -96,6 +121,7 @@ function Restart(){
 		}
 	}
 	Move();
+	setColor();
 }
 
 //随机函数
