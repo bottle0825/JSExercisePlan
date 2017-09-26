@@ -85,7 +85,7 @@
 			var brick = main.children;
 			var cols = new Array();//初始化航道数组
 			var col = 2;//初始化航道为3
-			var speed = 2;//初始化速度为10
+			var speed = 7;//初始化速度为10
 			var bar = 3;//初始化随机模块为3种
 			var Lv = 1;
 			var score = 0;
@@ -103,13 +103,20 @@
 			
 			//键盘事件
 			document.onkeydown = function(event){
-				var Event = event|window.event;
+				var Event = event||window.event;
+				console.log(Event.keyCode);
 				switch(Event.keyCode){
 					case 37://左方向键
+						Change(brick[brick.length-1],true);
+						console.log('左移');
 						break;
 					case 39://右方向键
+						Change(brick[brick.length-1],false);
+						console.log('右移');
 						break;
 					case 40://下方向键
+						Down(brick[brick.length-1]);
+						console.log('下落');
 						break;
 				}
 			}
@@ -118,6 +125,7 @@
 			function Create(){
 				var r = Math.floor(Math.random()*(bar));
 				var newbrick = document.createElement('div');
+				col = 2;//初始化砖块位置
 				newbrick.style.backgroundColor = color[r];
 				newbrick.style.left = '160px';
 				newbrick.style.top = '0';
@@ -129,31 +137,63 @@
 			function Move(ele){
 				var bt = 0; 
 				var target = 550;
+				clearInterval(timer1);
 				timer1 = setInterval(function(){
 					bt+=speed;
 					ele.style.top = bt+'px';
 					if(bt == target){
 						clearInterval(timer1);
+						var timer = setTimeout(function(){
+							clearTimeout(timer);
+							Create();
+						},300)
 					}
-				},10);
+				},20);
 			}
 			//左右移动
 			function Change(ele,dir){
 				var bl = col*80;
 				if(dir){
 					col = col==0?0:col-1;
+					timer2 = setInterval(function(){
+						bl = bl==0?bl=0:bl-10;
+						ele.style.left = bl+'px';
+						if(bl == col*80){
+							clearInterval(timer2);
+						}
+					},10);
 				}else{
 					col = col==4?4:col+1;
+					timer2 = setInterval(function(){
+						bl = bl==320?bl=320:bl+10;
+						ele.style.left = bl+'px';
+						if(bl == col*80){
+							clearInterval(timer2);
+						}
+					},10);
 				}
-				timer2 = setInterval(function(){
-					bl+=10;
-					ele.style.top = bl+'px';
-					if(bt == col*80){
-						clearInterval(timer2);
-					}
-				},10);
 			}
-			
+			//加速下落
+			function Down(ele){
+				var target = 550;
+				var bt = ele.offsetTop;
+				clearInterval(timer1);
+				if(bt<550){
+					timer1 = setInterval(function(){
+						bt+=speed;
+						ele.style.top = bt+'px';
+						if(bt >= target){
+							ele.style.top = target+'px';
+							console.log('到底了');
+							clearInterval(timer1);
+							var timer = setTimeout(function(){
+								clearTimeout(timer);
+								Create();
+							},500)
+						}
+					},1);
+				}
+			}
 		</script>
 	</body>
 </html>
