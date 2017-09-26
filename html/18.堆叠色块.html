@@ -83,9 +83,11 @@
 			var main = document.getElementById('main');
 			var color = ['#ffffcc','#ffff99','#ffcc33','#ff9900','#ff6600'];
 			var brick = main.children;
+			var bri = null;
+			var r = null;//随机的砖块色号
 			var cols = new Array();//初始化航道数组
 			var col = 2;//初始化航道为3
-			var speed = 7;//初始化速度为10
+			var speed = 5;//初始化速度为10
 			var bar = 3;//初始化随机模块为3种
 			var Lv = 1;
 			var score = 0;
@@ -94,104 +96,163 @@
 			//初始化航道
 			for(var i=0;i<5;i++){
 				cols[i] = new Array();
+				cols[i].target = 550;
 			}
-			
 			//点击开始
 			btn[0].onclick = function(){
 				Create();
 			}
-			
 			//键盘事件
 			document.onkeydown = function(event){
 				var Event = event||window.event;
-				console.log(Event.keyCode);
 				switch(Event.keyCode){
 					case 37://左方向键
 						Change(brick[brick.length-1],true);
-						console.log('左移');
 						break;
 					case 39://右方向键
 						Change(brick[brick.length-1],false);
-						console.log('右移');
 						break;
 					case 40://下方向键
 						Down(brick[brick.length-1]);
-						console.log('下落');
 						break;
 				}
 			}
-			
 			//生成色块
 			function Create(){
-				var r = Math.floor(Math.random()*(bar));
+				r = Math.floor(Math.random()*(bar));
 				var newbrick = document.createElement('div');
 				col = 2;//初始化砖块位置
 				newbrick.style.backgroundColor = color[r];
 				newbrick.style.left = '160px';
 				newbrick.style.top = '0';
 				main.appendChild(newbrick);
-				console.log(brick[brick.length-1]);
-				Move(brick[brick.length-1]);
+				bri = brick[brick.length-1];
+				Move(bri);
 			}
 			//色块下降
 			function Move(ele){
 				var bt = 0; 
-				var target = 550;
 				clearInterval(timer1);
 				timer1 = setInterval(function(){
 					bt+=speed;
 					ele.style.top = bt+'px';
-					if(bt == target){
+					if(bt >= cols[col].target){
+						ele.style.top = cols[col].target+'px';
 						clearInterval(timer1);
-						var timer = setTimeout(function(){
-							clearTimeout(timer);
+//						var timer = setTimeout(function(){
+//							clearTimeout(timer);
+							Mix();
+							Remove();
 							Create();
-						},300)
+//						},300)
 					}
 				},20);
 			}
 			//左右移动
 			function Change(ele,dir){
 				var bl = col*80;
-				if(dir){
-					col = col==0?0:col-1;
-					timer2 = setInterval(function(){
-						bl = bl==0?bl=0:bl-10;
-						ele.style.left = bl+'px';
-						if(bl == col*80){
-							clearInterval(timer2);
-						}
-					},10);
-				}else{
-					col = col==4?4:col+1;
-					timer2 = setInterval(function(){
-						bl = bl==320?bl=320:bl+10;
-						ele.style.left = bl+'px';
-						if(bl == col*80){
-							clearInterval(timer2);
-						}
-					},10);
+				if(bri.offsetTop>0){//只有当新砖块产生才能使用该方法
+					if(dir&&(col==0?true:(cols[col-1].length*50)<=(550-bri.offsetTop))){
+						col = col==0?0:col-1;
+						timer2 = setInterval(function(){
+							bl = bl==0?bl=0:bl-10;
+							ele.style.left = bl+'px';
+							if(bl == col*80){
+								clearInterval(timer2);
+							}
+						},10);
+					}else if(!dir&&(col==4?true:(cols[col+1].length*50)<=(550-bri.offsetTop))){
+						col = col==4?4:col+1;
+						timer2 = setInterval(function(){
+							bl = bl==320?bl=320:bl+10;
+							ele.style.left = bl+'px';
+							if(bl == col*80){
+								clearInterval(timer2);
+							}
+						},10);
+					}
 				}
 			}
 			//加速下落
 			function Down(ele){
-				var target = 550;
 				var bt = ele.offsetTop;
 				clearInterval(timer1);
-				if(bt<550){
+				if(bt<550){//只有当砖块处于下落时才能使用该方法
 					timer1 = setInterval(function(){
 						bt+=speed;
 						ele.style.top = bt+'px';
-						if(bt >= target){
-							ele.style.top = target+'px';
-							console.log('到底了');
+						if(bt >= cols[col].target){
+							ele.style.top = cols[col].target+'px';
 							clearInterval(timer1);
-							var timer = setTimeout(function(){
-								clearTimeout(timer);
+//							var timer = setTimeout(function(){
+//								clearTimeout(timer);
+								Mix();
+								Remove();
 								Create();
-							},500)
+//							},300)
 						}
 					},1);
+				}
+			}
+			//融合砖块砖块
+			function Mix(){
+				var top = cols[col].target;
+				cols[col].target -=50;
+				var coljson = {'Obj':bri,'Color':r,'top':top};
+//				coljson.Obj.style.top = coljson.top + 'px';
+//				coljson.Obj.style.left = col*80 + 'px';
+				cols[col].push(coljson);
+				var le = cols[col].length;
+				if(cols[col][cols[col].length-1].Color==4){
+					console.log('*******');
+				}
+				while(cols[col].length>1&&cols[col][cols[col].length-1].Color<4&&cols[col][cols[col].length-1].Color==cols[col][cols[col].length-2].Color){
+					cols[col][cols[col].length-1].Obj.style.backgroundColor = '';
+					cols[col].pop();
+					cols[col][cols[col].length-1].Color++;
+					cols[col][cols[col].length-1].Obj.style.backgroundColor = color[cols[col][cols[col].length-1].Color];
+					cols[col].target +=50;
+				}
+			}
+			//检查是否满足同行同色
+			function Check(){
+				for(var i=0;i<cols[0].length;i++){
+					for(var j=1;j<5;j++){
+						if(!cols[j][i]){
+							return -1;
+						}else if(cols[0][i].Color==cols[j][i].Color){
+							if(j==4){
+								console.log(i);
+								return i;
+							}
+							continue;
+						}else{
+							return -1;
+						}
+					}
+				}
+				return -1;
+			}
+			//同行消除
+			function Remove(){
+				var ii = Check();
+						console.log(ii);
+				var jj = ii;
+				if(ii!=-1){
+					
+					for(var i=0;i<5;i++){
+						var removeClo = cols[i].splice(ii,1);
+						console.log(cols[i]);
+						while(cols[i][jj]){
+							cols[i][jj].top = removeClo.top-50;
+							cols[i][jj].Obj.style.top = cols[i][jj].top + 'px';
+							cols[i][jj].Obj.style.left = col*80 + 'px';
+							cols[i][jj].Color = removeClo.Color;
+							cols[i][jj].Obj.style.backgroundColor = color[cols[i][jj].Color];
+							jj++;
+						}
+						cols[i].target+=50;
+					}
 				}
 			}
 		</script>
