@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>20.照片墙</title>
+		<script src="../js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background: #333;
+			}
+			.cov{
+				display: none;
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				background: #000;
+				opacity: 0.7;
+				z-index: 3;
+			}
+			.show{
+				position: relative;
+				width: 100%;
+				height: 600px;
+				border: 1px solid;
+			}
+			.menu{
+				position: absolute;
+				left: 50px;
+				top: 50px;
+				width: 1120px;
+				height: 140px;
+				background: #999;
+				border-radius: 10px;
+			}
+			img{
+				position: absolute;
+				width: 200px;
+				height: 100px;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="cov"></div>
+		<h1>20.照片墙</h1>
+		<a href="../index.html">返还打卡</a>
+		<hr />
+		<div class="show">
+			<div class="menu"></div>
+			<div class="main">
+				<img src="../img/img1.jpg"/>
+				<img src="../img/img2.jpg"/>
+				<img src="../img/img3.jpg"/>
+				<img src="../img/img4.jpg"/>
+				<img src="../img/img5.jpg"/>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				var left = '';
+				var top = '';
+				for(var i=0;i<5;i++){
+					$('img:eq('+i+')').css({
+						left:60+(220*i)+'px',
+						top:60+'px'
+					});
+				}
+				$('.main img').click(function(){
+					$('.cov').show(0);
+					for(var i=0;i<5;i++){
+						$('img:eq('+i+')').css({
+							left:60+(220*i)+'px',
+							top:60+'px'
+						});
+					}
+					$(this).siblings().css({
+						height:'100px',
+						width:'200px',
+						'z-index':'1'
+					});
+					$(this).css({
+						left:'300px',
+						top:'100px',
+						height:'400px',
+						width:'800px',
+						'z-index':'5'
+					});
+				});
+				$('.cov').click(function(){
+					$(this).hide(0);
+					for(var i=0;i<5;i++){
+						$('img:eq('+i+')').css({
+							left:60+(220*i)+'px',
+							top:60+'px'
+						});
+					}
+					$('img').css({
+						height:'100px',
+						width:'200px',
+						'z-index':'1'
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
