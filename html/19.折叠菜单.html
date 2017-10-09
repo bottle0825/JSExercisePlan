@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>19.折叠菜单</title>
+		<script src="../js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			nav{
+				width: 600px;
+				margin: 50px auto;
+			}
+			nav ul{
+				position: relative;
+				width: 100px;
+				height: 200px;
+			}
+			nav ul li{
+				height: 50px;
+			}
+			nav ul li button{
+				width: 100px;
+				height: 50px;
+				background: #1B6D85;
+				border: none;
+				color: white;
+			}
+			ol{
+				display: none;
+				position: absolute;
+				left: 100px;
+				top: 0;
+				background: gray;
+			}
+			ol li{
+				width: 100px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				border: none;
+			}
+			ol li span{
+				display: block;
+				width: 100px;
+				height: 50px;
+			}
+			ol li div{
+				display: none;
+				position: absolute;
+				left: 100px;
+				top: 0;
+				width: 400px;
+				height: 200px;
+				background: #BCE8F1;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>19.折叠菜单</h1>
+		<a href="../index.html">返还打卡</a>
+		<hr />
+		<nav>
+			<ul>
+				<li>
+					<button>菜单1</button>
+					<ol>
+						<li>
+							<span>
+								选项1
+							</span>
+							<div>
+								这里是选项1的内容111111111111111
+							</div>
+						</li>
+						<li>
+							<span>
+								选项2
+							</span>
+							<div>
+								这里是选项2的内容22222222222222222
+							</div>
+						</li>
+						<li>
+							<span>
+								选项3
+							</span>
+							<div>
+								这里是选项3的内容3333333333333333
+							</div>
+						</li>
+						<li>
+							<span>
+								选项4
+							</span>
+							<div>
+								这里是选项4的内容4444444444444444
+							</div>
+						</li>
+					</ol>
+				</li>
+				<li>
+					<button>菜单2</button>
+					<ol>
+						<li>
+							<span>
+								选项1
+							</span>
+							<div>
+								这里是选项1的内容111111111111111
+							</div>
+						</li>
+						<li>
+							<span>
+								选项2
+							</span>
+							<div>
+								这里是选项2的内容22222222222222222
+							</div>
+						</li>
+						<li>
+							<span>
+								选项3
+							</span>
+							<div>
+								这里是选项3的内容3333333333333333
+							</div>
+						</li>
+						<li>
+							<span>
+								选项4
+							</span>
+							<div>
+								这里是选项4的内容4444444444444444
+							</div>
+						</li>
+					</ol>
+				</li>
+				<li>
+					<button>菜单3</button>
+					<ol>
+						<li>
+							<span>
+								选项1
+							</span>
+							<div>
+								这里是选项1的内容111111111111111
+							</div>
+						</li>
+						<li>
+							<span>
+								选项2
+							</span>
+							<div>
+								这里是选项2的内容22222222222222222
+							</div>
+						</li>
+						<li>
+							<span>
+								选项3
+							</span>
+							<div>
+								这里是选项3的内容3333333333333333
+							</div>
+						</li>
+						<li>
+							<span>
+								选项4
+							</span>
+							<div>
+								这里是选项4的内容4444444444444444
+							</div>
+						</li>
+					</ol>
+				</li>
+				<li>
+					<button>菜单4</button>
+					<ol>
+						<li>
+							<span>
+								选项1
+							</span>
+							<div>
+								这里是选项1的内容111111111111111
+							</div>
+						</li>
+						<li>
+							<span>
+								选项2
+							</span>
+							<div>
+								这里是选项2的内容22222222222222222
+							</div>
+						</li>
+						<li>
+							<span>
+								选项3
+							</span>
+							<div>
+								这里是选项3的内容3333333333333333
+							</div>
+						</li>
+						<li>
+							<span>
+								选项4
+							</span>
+							<div>
+								这里是选项4的内容4444444444444444
+							</div>
+						</li>
+					</ol>
+				</li>
+			</ul>
+		</nav>
+		<script type="text/javascript">
+			$(function(){
+				$('ol:eq(0)').css({
+					background:'lightblue'
+				});
+				$('ol:eq(1)').css({
+					background:'lightgreen'
+				});
+				$('ol:eq(2)').css({
+					background:'pink'
+				});
+				$('ol:eq(3)').css({
+					background:'lightgrey'
+				});
+				
+				//鼠标触动事件
+				$('button').mouseenter(function(){
+					$('ol').hide(200);
+					$('button').css({
+						background : '#1B6D85'
+					});
+					$(this).next().show(200);
+					$(this).css({
+						background : '#1D89FF'
+					});
+				});
+				$('span').mouseenter(function(){
+					$('ol div').hide(200);
+					$(this).next().show(200);
+				});
+				$('nav').mouseleave(function(){
+					$('div,ol').hide(200);
+					$('button').css({
+						background : '#1B6D85'
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
