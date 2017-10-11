@@ -12,7 +12,7 @@
 		<a href="../index.html">返还打卡</a>
 		<hr />
 		<div class="col-xs-4 col-lg-offset-4 alert alert-info">
-			<form action="" class="form-horizontal">
+			<form action="#" class="form-horizontal">
 				<div class="form-group">
 					<label for="name" class="col-lg-3 control-label">电影名称：</label>
 					<div class="col-lg-9">
@@ -31,7 +31,7 @@
 						<input type="text" id="type" value="" placeholder="电影名称" class="form-control"/>
 					</div>
 				</div>
-				<button class="btn btn-block btn-success">提交记录</button>
+				<button class="btn btn-block btn-success" id="Sub">提交记录</button>
 			</form>
 			<table class="table">
 				<thead>
@@ -47,7 +47,28 @@
 		</div>
 		<script type="text/javascript">
 			$(function(){
-				
+				console.log('页面加载完成');
+				$('#Sub').click(function(){
+					var reg = /[a-z]+/
+					if(reg.test($('#name').val())&&reg.test($('#actor').val())&&reg.test($('#type').val())){
+						//创建行
+						var newTr = $('<tr></tr>');
+						newTr.append('<td>'+$('#name').val()+'</td>');
+						newTr.append('<td>'+$('#actor').val()+'</td>');
+						newTr.append('<td>'+$('#type').val()+'</td>');
+						newTr.append('<td><a href="#">删除</a></td>');
+						newTr.appendTo($('#Date'));
+					}else{
+						alert('输入错误');
+					}
+				});
+				$('#Date').on('click','tr td a',function(){
+					if(confirm('是否删除本条信息')){
+						$(this).parent().parent().remove();
+					}else{
+						return;
+					}
+				});
 			});
 		</script>
 	</body>
