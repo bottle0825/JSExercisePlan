@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>23.实现懒加载</title>
+		<script src="../js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery.lazyload.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			#inner{
+				width: 1250px;
+				padding: 10px;
+				margin: 0 auto;
+				background: lightblue;
+			}
+			ul li{
+				display: inline-block;
+				width: 600px;
+				height: 300px;
+				padding: 5px;
+				border: 1px solid #fff;
+				margin: 10px 0;
+			}
+			img{
+				width: 600px;
+				height: 300px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>23.实现懒加载</h1>
+		<a href="../index.html"></a>
+		<hr />
+		<div id="box">
+			<div id="inner">
+				<ul>
+					<li><img src="../img/loading.gif" data-original='../img/1.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/2.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/3.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/4.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/5.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/1.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/2.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/3.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/4.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/5.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/1.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/2.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/3.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/4.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/5.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/1.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/2.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/3.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/4.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/5.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/1.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/2.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/3.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/4.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/5.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/1.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/2.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/3.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/4.jpg'/></li>
+					<li><img src="../img/loading.gif" data-original='../img/5.jpg'/></li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//原生
+//			window.onload = function(){
+//				var imgs = document.getElementsByTagName('img');
+//				var num = imgs.length;
+//				var n = 0;//储存图片加载到的位置，避免每次都从第一张图片开始遍历
+//				function Lazy(){
+//					//---拿到可视区的高度
+//					var seeH = document.documentElement.clientHeight;
+//					//---滚动的距离
+//					var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+//					for(var i=n;i<num;i++){
+//						if(imgs[i].offsetTop<seeH+scrollTop){
+//							if(imgs[i].getAttribute('src') == '../img/loading.gif'){
+//								imgs[i].setAttribute('src',imgs[i].getAttribute('data-original'));
+//								console.log('加载成功');
+//							}
+//							n = i+1;
+//						}
+//					}
+//				}
+//				Lazy();
+//				window.onscroll = function(){
+//					Lazy();
+//				}
+//			}
+			//jQuery
+//			$(function(){
+//				var imgs = $('img');
+//				var num = imgs.length;
+//				var n = 0;//储存图片加载到的位置，避免每次都从第一张图片开始遍历
+//				function Lazy(){
+//					for(var i=n;i<num;i++){
+//						if(imgs.eq(i).offset().top<$(window).height()+$(window).scrollTop()){
+//							if(imgs.eq(i).attr('src')=='../img/loading.gif'){
+//								imgs.eq(i).attr('src',imgs.eq(i).attr('data-original'));
+//								console.log('加载成功');
+//							}
+//							n=i+1;
+//						}
+//					}
+//				}
+//				$(window).on('scroll',Lazy).trigger('scroll');
+//			});
+			
+			//插件
+			$(function(){
+				$('img').lazyload({
+					placeholder:'img/loading.gif',	//--图片占位符
+					effect:'fadeIn',				//--图片加载入效果
+					threshold:200,					//--提前加载的距离
+//					event:'click',					//--事件触发，mouseover/foobar/sporty
+					container:'#inner',				//--图片加载容器，需要进行懒加载的区域
+					failurelimit:10,				//--图文混排时，图片间隔的数量，剩下的不执行懒加载
+					skip_invisible:false			//--默认忽略隐藏的文件/true为默认加载
+				});
+			});
+		</script>
+	</body>
+</html>
