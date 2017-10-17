@@ -198,10 +198,11 @@
 			function Mix(){
 				var top = cols[col].target;
 				cols[col].target -=50;
-				var coljson = {'Obj':bri,'Color':r,'top':top};
+				var coljson = {'Obj':bri,'Color':r,'top':top,'left':col*80};
 //				coljson.Obj.style.top = coljson.top + 'px';
 //				coljson.Obj.style.left = col*80 + 'px';
 				cols[col].push(coljson);
+				console.log(document.getElementsByTagName('div').length);
 				var le = cols[col].length;
 				if(cols[col][cols[col].length-1].Color==4){
 					console.log('*******');
@@ -239,15 +240,15 @@
 						console.log(ii);
 				var jj = ii;
 				if(ii!=-1){
-					
 					for(var i=0;i<5;i++){
-						var removeClo = cols[i].splice(ii,1);
-						console.log(cols[i]);
+						var jj=ii;
+						cols[i][jj].Obj.style.backgroundColor = '#333';
+						var removedir = cols[i].splice(ii,1);
 						while(cols[i][jj]){
-							cols[i][jj].top = removeClo.top-50;
+							cols[i][jj].Obj.style.backgroundColor = '#333';
+							cols[i][jj].top+=50;
 							cols[i][jj].Obj.style.top = cols[i][jj].top + 'px';
-							cols[i][jj].Obj.style.left = col*80 + 'px';
-							cols[i][jj].Color = removeClo.Color;
+							cols[i][jj].Obj.style.left = cols[i][jj].left + 'px';
 							cols[i][jj].Obj.style.backgroundColor = color[cols[i][jj].Color];
 							jj++;
 						}
