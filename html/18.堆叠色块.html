@@ -65,7 +65,7 @@
 				</p>
 				<br />
 				<p>Lv:</p>
-				<p id="score">
+				<p id="lv">
 					显示等级
 				</p>
 				<br />
@@ -81,18 +81,34 @@
 		<script type="text/javascript">
 			var btn = document.getElementsByTagName('button');
 			var main = document.getElementById('main');
+			var Score = document.getElementById('score');
+			var Level = document.getElementById('lv');
 			var color = ['#ffffcc','#ffff99','#ffcc33','#ff9900','#ff6600'];
 			var brick = main.children;
 			var bri = null;
 			var r = null;//随机的砖块色号
 			var cols = new Array();//初始化航道数组
 			var col = 2;//初始化航道为3
-			var speed = 5;//初始化速度为10
+			var speed = 3;//初始化速度为10
 			var bar = 3;//初始化随机模块为3种
 			var Lv = 1;
 			var score = 0;
 			var timer1 = null;//砖块下降定时器
 			var timer2 = null;//砖块左右移动定时器
+			//初始化数据
+			function init(){
+				bri = null;
+				r = null;//随机的砖块色号
+				cols = new Array();//初始化航道数组
+				col = 2;//初始化航道为3
+				speed = 3;//初始化速度为10
+				bar = 3;//初始化随机模块为3种
+				Lv = 1;
+				score = 0;
+				timer1 = null;//砖块下降定时器
+				timer2 = null;//砖块左右移动定时器
+			}
+			init();
 			//初始化航道
 			for(var i=0;i<5;i++){
 				cols[i] = new Array();
@@ -117,6 +133,21 @@
 						break;
 				}
 			}
+			//显示分数等级
+			function Show(){
+				Score.innerHTML = score+(Lv-1)*1000;
+				if(score>=1000){
+					Lv++;
+					score-=1000;
+					speed*=1.5;
+				}
+				Level.innerHTML = Lv;
+				if(Lv==3){
+					bar=4;
+				}else if(Lv==5){
+					bar=5;
+				}
+			}
 			//生成色块
 			function Create(){
 				r = Math.floor(Math.random()*(bar));
@@ -127,6 +158,15 @@
 				newbrick.style.top = '0';
 				main.appendChild(newbrick);
 				bri = brick[brick.length-1];
+				score+=20;
+				Show();
+				for(var i=0;i<5;i++){
+					if(cols[i].length==12){
+						alert('游戏结束，你的最后得分是：'+score);
+						init();
+						return 0;
+					}
+				}
 				Move(bri);
 			}
 			//色块下降
@@ -213,6 +253,8 @@
 					cols[col][cols[col].length-1].Color++;
 					cols[col][cols[col].length-1].Obj.style.backgroundColor = color[cols[col][cols[col].length-1].Color];
 					cols[col].target +=50;
+					score+=40;
+					Show();
 				}
 			}
 			//检查是否满足同行同色
@@ -254,6 +296,8 @@
 						}
 						cols[i].target+=50;
 					}
+					score+=100;
+					Show();
 				}
 			}
 		</script>
