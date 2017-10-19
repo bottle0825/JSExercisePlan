@@ -76,11 +76,11 @@ createClock.onclick = function(){
 	var chour = 0;
 	var cminute = 0;
 	//生成小时数选项
-	for(var i = 1;i<25;i++){
+	for(var i = 1;i<24;i++){
 		hourList.innerHTML += "<option value='"+i+"'>"+i+"</option>"
 	}
 	//生成分钟数选项
-	for(var i = 1;i<61;i++){
+	for(var i = 1;i<60;i++){
 		minutelist.innerHTML += "<option value='"+i+"'>"+i+"</option>"
 	}
 	//点击获取时间，并记录在显示面板
