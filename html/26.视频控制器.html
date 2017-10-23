@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>26.视频控制器</title>
+		<link rel="stylesheet" href="../css/font-awesome.min.css" />
+		<style>
+			*{
+				margin:0px;
+				padding:0px;
+			}
+			body{
+				background: lightgray;
+			}
+			.player{
+				cursor: pointer;
+				width:720px;
+				height: 360px;
+				background: black;
+				margin:10px auto;
+				padding:10px;
+				border:1px solid #000;
+				border-radius: 10px;
+				box-shadow: 0px 0px 10px lightseagreen;
+				position: relative;	
+			}
+			.player video{
+				width:720px;
+				height: 360px;
+				display: block;
+				margin:0px auto;
+			}
+			/*控制条*/
+			.player .controls{
+				position: absolute;
+				bottom:10px;
+				left:10px;
+				width: 720px;
+				height: 40px;
+				border-radius: 5px;
+				background: rgba(0,0,0,0.5);
+				display: none;
+			}
+			/*开关按钮*/
+			.switch{
+				position: absolute;
+				bottom:10px;
+				left:10px;
+				width:20px;
+				height: 20px;
+				text-align: center;
+				line-height: 20px;
+				color:#fff;
+			}
+			/*进度条*/
+			.progress{
+				position: absolute;
+				bottom:14px;
+				left:40px;
+				width:350px;
+				height: 10px;
+				background: rgba(255,255,255,0.4);
+				border-radius:5px;
+				overflow: hidden;
+			}
+			.curr-progress{
+				width:20%;
+				height: 10px;
+				background: #fff;
+			}
+			/*音量*/
+			.volume{
+				position: absolute;
+				bottom:9px;
+				left:410px;
+				width:110px;
+				height: 20px;
+			}
+			.volume a{
+				color:#fff;
+				padding:0px 10px;
+			}
+			/*时间模块*/
+			.time{
+				position: absolute;
+				bottom:6px;
+				left:520px;
+				height: 20px;
+				color:#fff;
+				font-size:14px;
+			}
+			.extend{
+				position: absolute;
+				bottom:6px;
+				right:20px;
+				width:20px;
+				height: 20px;
+				text-align: center;
+				line-height: 20px;
+				color:#fff;
+			}
+		</style>
+		<script src='../js/jquery-1.8.3.min.js'></script>
+	</head>
+	<body>
+		<h1>26.视频控制器</h1>
+		<a href="../index.html"></a>
+		<hr />
+		<div class="player">
+			<video src="../video/movie1.mp4"  id='video'></video>
+			<!--定义控制条-->
+			<div class='controls'>
+				<a href="#" class='switch icon-play'>
+					
+				</a>
+				<!--进度条-->
+				<div class='progress'>
+					<div class='curr-progress'></div>
+				</div>
+				<!--音量-->
+				<div class='volume'>
+					<a href="#" class='volumeD icon-volume-down'></a>
+					<a href="#" class='volumeU icon-volume-up'></a>
+					<a href="#" class='volumeM icon-volume-off'></a>
+				</div>
+				<!--时间-->
+				<div class='time'>
+					<span class='curr-time'>00:00:00</span>/<span class='total-time'>00:00:00</span>
+				</div>
+				<!--全屏-->
+				<a href="#" class='extend icon-resize-full'></a>
+			</div>
+		</div>
+		<script>
+			//---获取标签
+			var player = $('.player')[0];
+			var video = $('#video')[0];
+			var controls = $('.controls')[0];
+			var playBtn = $('.switch')[0];
+			var currProgress = $('.curr-progress')[0];
+			
+			var volumeD = $('.volumeD')[0];
+			var volumeU = $('.volumeU')[0];
+			var volumeM = $('.volumeM')[0];
+			
+			var currTime = $('.curr-time')[0];
+			var totalTime = $('.total-time')[0];
+			
+			var extend = $('.extend')[0];
+
+			var tTime = 0;
+			
+			//控制条显示隐藏
+			player.onmouseover = function(){
+				controls.style.display='block';
+			}
+			player.onmouseout = function(){
+				controls.style.display='none';
+			}
+			//---暂停播放
+			playBtn.onclick = function(){
+				if(video.paused){
+					video.play();
+					this.classList.remove('icon-play');
+					this.classList.add('icon-pause');
+				}else{
+					video.pause();
+					this.classList.add('icon-play');
+					this.classList.remove('icon-pause');
+				}
+			}
+			//点击视频屏幕，暂停播放
+			video.onclick = function(){
+				if(video.paused){
+					video.play();
+					playBtn.classList.remove('icon-play');
+					playBtn.classList.add('icon-pause');
+				}else{
+					video.pause();
+					playBtn.classList.add('icon-play');
+					playBtn.classList.remove('icon-pause');
+				}
+			}
+			//---时间模块
+			//---等视频加载完成后才能获取
+			video.oncanplay = function(){
+				//---视频的总时间
+				var tTime = video.duration;
+//				console.log(tTime);//---234.568
+				//--小时
+				var h = Math.floor(tTime/3600);
+				//--分
+				var m = Math.floor(tTime%3600/60);
+				//--秒
+				var s = Math.floor(tTime%60);
+				//--判断
+				h=h>=10?h:'0'+h;
+				m=m>=10?m:'0'+m;
+				s=s>=10?s:'0'+s;
+				totalTime.innerHTML = h+':'+m+':'+s;
+			};
+			//---视频更新获取当前的时间
+			video.ontimeupdate = function(){
+				//---获取当前的时间
+				var cTime = video.currentTime; 
+				var tTime = video.duration;
+//				console.log(cTime);
+				//--小时
+				var h = Math.floor(cTime/3600);
+				//--分
+				var m = Math.floor(cTime%3600/60);
+				//--秒
+				var s = Math.floor(cTime%60);
+				//--判断
+				h=h>=10?h:'0'+h;
+				m=m>=10?m:'0'+m;
+				s=s>=10?s:'0'+s;
+				
+				currTime.innerHTML = h+':'+m+':'+s;
+				//控制进度条
+				var value = cTime/tTime;
+//				console.log(value);
+				//---0.5
+				currProgress.style.width=value*100+'%';//50%
+			}
+			//音量
+//			var volume = video.volume;
+//			console.log(volume);//---1
+			
+			function setVol(value){
+				//---获取音量
+				var volume = video.volume;
+				volume = (volume+value).toFixed(1);
+				if(volume>=0&&volume<=1){
+					video.volume = volume;
+				}else{
+					video.volume=(volume<0)?0:1;
+				}
+			};
+			
+			volumeD.onclick=function(){
+				
+				setVol(-0.1);
+			};
+			
+			volumeU.onclick=function(){
+				setVol(0.1);
+			};
+			
+			volumeM.onclick=function(){
+				//--判断当前是不是静音--video.muted
+				if(video.muted){
+					video.muted = false;
+				}else{
+					video.muted = true;
+				}
+			}
+			//---全屏
+			//---双加全屏
+			function requestFullScreen(element){
+				var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+				if(requestMethod){
+					requestMethod.call(element);
+				}else if(typeof window.ActiveXObject!=='undefined'){
+					//创建Wsshell对象，可以调用系统程序，注册表，，，，，
+					var wsShell = new ActiveXObject('WSript.shell');
+					//---F11
+					if(wsShell!==null){
+						wsShell.SendKeys('{F11}');
+					}
+				}
+			}
+			//---点击全屏
+			extend.onclick = function(){
+				requestFullScreen(video);
+				//video.webkitRequestFullScreen();
+				//video.webkitCancelFullScreen();
+			}
+			
+			//取消全屏
+			function  cancelFullScreen(element){
+				var cancelMethod = element.cancelFullScreen || element.webkitCancelFullScreen || element.mozRequestCancelFullScreen || element.msCancelFullScreen;
+				if(cancelMethod){
+					cancelMethod.call(element);
+				}else if(typeof window.ActiveXObject!=='undefined'){
+					//创建Wsshell对象，可以调用系统程序，注册表，，，，，
+					var wsShell = new ActiveXObject('WSript.shell');
+					//---F11
+					if(wsShell!==null){
+						wsShell.SendKeys('{F11}');
+					}
+				}
+			}
+			
+			//双击全屏，退出全屏
+			function fullorcallScreen(element){
+				//--点击的次数
+				var count = 0;
+				element.addEventListener('dblclick',function(){
+					if(count%2==0){
+						requestFullScreen(element);
+					}else{
+						cancelFullScreen(document);
+					};
+					count++;
+				},false);
+			}
+			fullorcallScreen(video);
+		</script>
+	</body>
+</html>
